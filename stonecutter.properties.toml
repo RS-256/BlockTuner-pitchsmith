@@ -14,6 +14,7 @@ publish.curseforge = ""
 ["1.21.11"]
 deps.fabric_api = "0.141.3+1.21.11"
 deps.yacl = "3.8.2+1.21.11-fabric"
+build.yacl = ">=3.8.2"
 deps.modmenu = "17.0.0"
 mod.mc_dep = ">=1.21.10 <=1.21.11"
 mod.mc_title = "1.21.11"
