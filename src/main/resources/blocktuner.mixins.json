@@ -5,6 +5,7 @@
   "refmap": "${refmap}",
   "compatibilityLevel": "${java}",
   "mixins": [
+    "NoteBlockInvoker",
     "NoteBlockMixin",
     "PlaySoundCommandMixin"
   ],

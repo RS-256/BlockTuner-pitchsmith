@@ -18,6 +18,7 @@
 
 package com.rs256.blocktuner;
 
+import com.rs256.blocktuner.mixin.NoteBlockInvoker;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandBuildContext;
@@ -28,7 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NoteBlock;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockTunerCommands {
 
@@ -47,11 +48,10 @@ public class BlockTunerCommands {
             return -1;
         }
         world.setBlock(pos, world.getBlockState(pos).setValue(NoteBlock.NOTE, note), 2 | 16);
-        NoteBlock block = (NoteBlock) world.getBlockState(pos).getBlock();
-        // please do not change this to world.addSyncedBlockEvent() as it does not allow chords to be played.
+        BlockState state = world.getBlockState(pos);
+        // please do not change this to world.addSyncedBlockEvent() as it does not allow chords to be played. <- more suitable method; NoteBlock#playNote
         if (world.getBlockState(pos.above()).isAir()) {
-            world.blockEvent(pos, block, 0, 0);
-            world.gameEvent(source.getEntity(), GameEvent.NOTE_BLOCK_PLAY, pos);
+            ((NoteBlockInvoker) state.getBlock()).blocktuner$playNote(source.getEntity(), state, world, pos);
         }
         return note;
     }

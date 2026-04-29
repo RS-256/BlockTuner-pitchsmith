@@ -28,7 +28,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,10 +48,8 @@ public class NoteBlockMixin extends Block {
             target = "Lnet/minecraft/world/level/block/Block;useItemOn(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;"))
     private void onTune(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == Items.BLAZE_ROD) {
-            if (level.getBlockState(blockPos.above()).isAir()) {
-                NoteBlock block = (NoteBlock) (Object) this;
-                level.blockEvent(blockPos, block, 0, 0);
-                level.gameEvent(player, GameEvent.NOTE_BLOCK_PLAY, blockPos);
+            if (!level.isClientSide() && level.getBlockState(blockPos.above()).isAir()) {
+                ((NoteBlockInvoker) this).blocktuner$playNote(player, blockState, level, blockPos);
             }
             cir.setReturnValue(InteractionResult.CONSUME);
         }

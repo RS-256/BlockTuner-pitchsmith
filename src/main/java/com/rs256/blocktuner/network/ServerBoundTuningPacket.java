@@ -17,6 +17,7 @@
  */
 package com.rs256.blocktuner.network;
 
+import com.rs256.blocktuner.mixin.NoteBlockInvoker;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -28,7 +29,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NoteBlock;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNullByDefault;
 
 import static com.rs256.blocktuner.BlockTuner.id;
@@ -55,10 +56,9 @@ public record ServerBoundTuningPacket(BlockPos blockPos, int note) implements Cu
             return;
         }
         world.setBlock(pos, world.getBlockState(pos).setValue(NoteBlock.NOTE, note), 2 | 16);
+        BlockState state = world.getBlockState(pos);
         if (world.getBlockState(pos.above()).isAir()) {
-            NoteBlock block = (NoteBlock) world.getBlockState(pos).getBlock();
-            world.blockEvent(pos, block, 0, 0);
-            world.gameEvent(context.player(), GameEvent.NOTE_BLOCK_PLAY, pos);
+            ((NoteBlockInvoker) state.getBlock()).blocktuner$playNote(context.player(), state, world, pos);
         }
         context.player().swing(InteractionHand.MAIN_HAND);
     }
