@@ -4,11 +4,11 @@ mod.name = "BlockTuner pitchsmith"
 mod.version = "2.1.0-pitchsmith"
 mod.group = "com.rs256"
 
-deps.fabric_loader = "0.18.4"
+deps.fabric_loader = "0.18.6"
 build.fabric_loader = ">=0.18.4"
 build.fabric_api = "*"
 
-publish.modrinth = ""
+publish.modrinth = "M9stSmeL"
 publish.curseforge = ""
 
 ["1.21.11"]
