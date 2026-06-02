@@ -1,7 +1,7 @@
 # Mod metadata - shared across all versions
 mod.id = "blocktuner"
 mod.name = "BlockTuner pitchsmith"
-mod.version = "2.1.0-pitchsmith"
+mod.version = "2.1.1-pitchsmith"
 mod.group = "com.rs256"
 
 deps.fabric_loader = "0.18.6"

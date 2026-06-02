@@ -46,7 +46,7 @@ public class BlockTunerClient implements ClientModInitializer {
         MidiManager.getMidiManager().refreshMidiDevice();
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
             if (BlockTunerConfig.onBlockTunerServer
-                && InputUtil.isCtrlDown()
+                && (!BlockTunerConfig.isRequireCtrlToOpenGui() || InputUtil.isCtrlDown())
                 && !player.isSpectator()
                 && !player.isShiftKeyDown()
                 && world.getBlockState(hitResult.getBlockPos()).getBlock() == Blocks.NOTE_BLOCK
