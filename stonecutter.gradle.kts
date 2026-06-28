@@ -2,7 +2,7 @@ plugins {
     id("dev.kikugie.stonecutter")
     id("net.fabricmc.fabric-loom") version "1.15-SNAPSHOT" apply false
     id("net.fabricmc.fabric-loom-remap") version "1.15-SNAPSHOT" apply false
-    // id("me.modmuss50.mod-publish-plugin") version "1.1.0" apply false
+    id("me.modmuss50.mod-publish-plugin") version "1.1.0" apply false
 }
 
 stonecutter active "26.1.2"
@@ -31,8 +31,33 @@ val releaseVersions = listOf(
     "26.1.2"
 )
 
+extra["publish.changelogReleaseVersion"] = releaseVersions.last()
+
 tasks.register("buildReleaseRemapped") {
     group = "build"
     description = "Build remapped jars only for the release versions."
     dependsOn(releaseVersions.map { v -> ":$v:buildAndCollectRemapped" })
+}
+// ---------------------------------------------------------------
+// Publisher - uncomment the blocks below after enabling the
+// mod-publish-plugin above and setting publish.modrinth /
+// publish.curseforge in gradle.properties.
+// ---------------------------------------------------------------
+
+stonecutter tasks {
+    order("publishModrinth")
+    //order("publishCurseforge")
+}
+
+tasks.register("publishAllToModrinthRelease") {
+    group       = "publishing"
+    description = "Publish all release versions to Modrinth in order."
+    dependsOn(releaseVersions.map { ":$it:publishModrinth" })
+}
+gradle.projectsEvaluated {
+    releaseVersions.zipWithNext().forEach { (prev, next) ->
+        project(":$next").tasks.named("publishModrinth") {
+            mustRunAfter(":$prev:publishModrinth")
+        }
+    }
 }

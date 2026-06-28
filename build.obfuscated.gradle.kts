@@ -1,6 +1,6 @@
 plugins {
     id("net.fabricmc.fabric-loom-remap")
-    // id("me.modmuss50.mod-publish-plugin") version "1.1.0"
+    id("me.modmuss50.mod-publish-plugin") version "1.1.0"
 }
 
 version = "${property("mod.version")}+${sc.current.version}"
@@ -151,4 +151,59 @@ tasks {
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}/sources"))
         dependsOn("build")
     }
+}
+
+// ---------------------------------------------------------------
+// Publishes builds to Modrinth and Curseforge
+// with changelog from the CHANGELOG.md file only on the final release version
+//
+// uncomment after enabling mod-publish-plugin above
+// and filling in publish.modrinth / publish.curseforge in
+// root/gradle.properties.
+// ---------------------------------------------------------------
+
+val changelogReleaseVersion = rootProject.extra["publish.changelogReleaseVersion"] as String
+val publishChangelog =
+    if (sc.current.version == changelogReleaseVersion) rootProject.file("CHANGELOG.md").readText()
+    else ""
+
+publishMods {
+    file           = tasks.remapJar.flatMap { it.archiveFile }
+    additionalFiles.from(tasks.remapSourcesJar.flatMap { it.archiveFile })
+    displayName    = "${property("mod.name")} v${property("mod.version")} for mc${property("mod.mc_title")}"
+    version        = "v${property("mod.version")}-mc${sc.current.version}"
+    changelog      = publishChangelog
+    type           = STABLE
+    modLoaders.add("fabric")
+
+    dryRun = providers.environmentVariable("MODRINTH_TOKEN").getOrNull() == null
+        || providers.environmentVariable("CURSEFORGE_TOKEN").getOrNull() == null
+
+// Strongly recommend that you save the token in your PC’s environment variables.
+
+    modrinth {
+        projectId   = property("publish.modrinth") as String
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        minecraftVersions.addAll(property("mod.mc_targets").toString().split(' '))
+        requires {
+            slug = "fabric-api"
+        }
+    }
+
+    curseforge {
+        projectId   = property("publish.curseforge") as String
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        minecraftVersions.addAll(property("mod.mc_targets").toString().split(' '))
+        requires {
+            slug = "fabric-api"
+        }
+    }
+}
+
+tasks.named("publishModrinth") {
+    dependsOn("remapJar")
+}
+
+tasks.named("publishCurseforge") {
+    dependsOn("remapJar")
 }
