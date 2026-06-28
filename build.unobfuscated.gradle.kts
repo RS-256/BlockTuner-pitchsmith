@@ -31,15 +31,15 @@ repositories {
 dependencies {
     fun fapi(vararg modules: String) {
         for (module in modules) {
-            modImplementation(fabricApi.module(module, property("deps.fabric_api") as String))
+            implementation(fabricApi.module(module, property("deps.fabric_api") as String))
         }
     }
 
     minecraft("com.mojang:minecraft:${sc.current.version}")
     implementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
     implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
-    modImplementation("com.terraformersmc:modmenu:${property("deps.modmenu")}")
-    modImplementation("maven.modrinth:yacl:${property("deps.yacl")}")
+    implementation("com.terraformersmc:modmenu:${property("deps.modmenu")}")
+    implementation("maven.modrinth:yacl:${property("deps.yacl")}")
     implementation("org.quiltmc.parsers:gson:0.2.1")
     implementation("org.quiltmc.parsers:json:0.2.1")
     implementation("com.twelvemonkeys.common:common-lang:3.12.0")
@@ -72,7 +72,7 @@ loom {
     }
 
     mixin {
-        useLegacyMixinAp = true
+        useLegacyMixinAp = false
     }
 }
 

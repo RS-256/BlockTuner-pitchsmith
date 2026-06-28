@@ -21,8 +21,14 @@ package com.rs256.blocktuner.display;
 import com.rs256.blocktuner.util.InputUtil;
 import com.rs256.blocktuner.util.NoteNames;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+//? if >=26.1 {
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.TextAlignment;
+//?} else {
+/*import net.minecraft.client.gui.GuiGraphics;
+*///?}
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +37,11 @@ import net.minecraft.world.phys.HitResult;
 
 public class NoteNameHud {
 
-    public static void render(GuiGraphics graphics) {
+    //? if >=26.1 {
+    public static void extractRenderState(GuiGraphicsExtractor graphics) {
+    //?} else {
+    /*public static void render(GuiGraphics graphics) {
+    *///?}
         Minecraft client = Minecraft.getInstance();
         assert client.level != null;
         assert client.player != null;
@@ -44,7 +54,16 @@ public class NoteNameHud {
                     int note = state.getValue(NoteBlock.NOTE);
                     int x = client.getWindow().getGuiScaledWidth() / 2 + 4;
                     int y = client.getWindow().getGuiScaledHeight() / 2 + 4;
-                    graphics.drawString(client.font, NoteNames.get(note) + ", " + note, x, y, 0xff66ccff);
+                    //? if >=26.1 {
+                    graphics.textRenderer().accept(
+                        TextAlignment.LEFT,
+                        x,
+                        y,
+                        Component.literal(NoteNames.get(note) + ", " + note).withColor(0x66ccff)
+                    );
+                    //?} else {
+                    /*graphics.drawString(client.font, NoteNames.get(note) + ", " + note, x, y, 0xff66ccff);
+                    *///?}
                 }
             }
         }

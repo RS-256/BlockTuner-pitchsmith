@@ -4,8 +4,8 @@ mod.name = "BlockTuner pitchsmith"
 mod.version = "2.1.1-pitchsmith"
 mod.group = "com.rs256"
 
-deps.fabric_loader = "0.18.6"
-build.fabric_loader = ">=0.18.4"
+deps.fabric_loader = "0.19.3"
+build.fabric_loader = ">=0.19.3"
 build.fabric_api = "*"
 
 publish.modrinth = "M9stSmeL"
@@ -19,3 +19,12 @@ deps.modmenu = "17.0.0"
 mod.mc_dep = ">=1.21.10 <=1.21.11"
 mod.mc_title = "1.21.11"
 mod.mc_targets = "1.21.10 1.21.11"
+
+["26.1.2"]
+deps.fabric_api = "0.153.0+26.1.2"
+deps.yacl = "3.9.5+26.1-fabric"
+build.yacl = ">=3.9.5"
+deps.modmenu = "18.0.0-beta.1"
+mod.mc_dep = ">=26.1 <=26.1.2"
+mod.mc_title = "26.1.2"
+mod.mc_targets = "26.1 26.1.1 26.1.2"

@@ -26,7 +26,11 @@ import com.rs256.blocktuner.util.NoteNames;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.gui.GuiGraphics;
+//? if >=26.1 {
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?} else {
+/*import net.minecraft.client.gui.GuiGraphics;
+*///?}
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -172,24 +176,36 @@ public class TuningScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        super.render(graphics, mouseX, mouseY, delta);
-    }
-
-    @Override
     public void tick() {
         if (minecraft.level == null || minecraft.level.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK) {
             this.close();
         }
     }
 
+    //? if <26.1 {
+    /*@Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        super.render(graphics, mouseX, mouseY, delta);
+    }
+    *///?}
+
+    //? if >=26.1 {
     @Override
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        super.extractBackground(graphics, mouseX, mouseY, delta);
+        this.drawBackground(graphics);
+    }
+
+    protected void drawBackground(GuiGraphicsExtractor graphics) {
+    //?} else {
+    /*@Override
     public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         super.renderBackground(graphics, mouseX, mouseY, delta);
         this.drawBackground(graphics);
     }
 
     protected void drawBackground(GuiGraphics graphics) {
+    *///?}
         //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
@@ -294,7 +310,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void render(GuiGraphics guiGraphics, int i, int j, float f) {
+        //? if >=26.1 {
+        public void extractRenderState(GuiGraphicsExtractor guiGraphics, int i, int j, float f) {
+        //?} else {
+        /*public void render(GuiGraphics guiGraphics, int i, int j, float f) {
+        *///?}
             int keySignature = BlockTunerConfig.getKeySignature();
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.x, this.y, (keySignature + 8) % 8 * 32, (float) (keySignature + 8) / 8 * 16 + 224, 32, 16, 256, 256);
@@ -313,7 +333,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             if (!this.visible) {
                 return;
             }
@@ -374,7 +398,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -399,7 +427,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             boolean mask = mouseX >= this.getX() + 8 - 8 * keyShape && mouseY >= this.getY() && mouseX < this.getX() + 24 - 8 * keyShape && mouseY < this.getY() + 13;
             this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
             this.isHovered = this.isHovered && !mask;
@@ -425,7 +457,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             int status = 0;
@@ -459,7 +495,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             int status = 0;
@@ -498,7 +538,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             int status = 0;
@@ -550,7 +594,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             int status = 0;
@@ -584,7 +632,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             int status = 0;
@@ -614,7 +666,11 @@ public class TuningScreen extends Screen {
         }
 
         @Override
-        public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=26.1 {
+        protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        //?} else {
+        /*public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        *///?}
             //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             int status = 0;

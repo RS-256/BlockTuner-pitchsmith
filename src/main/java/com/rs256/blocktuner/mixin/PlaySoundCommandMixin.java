@@ -14,7 +14,8 @@ public class PlaySoundCommandMixin {
         at = @At(
             value = "INVOKE",
             target = "Lcom/mojang/brigadier/arguments/FloatArgumentType;floatArg(FF)Lcom/mojang/brigadier/arguments/FloatArgumentType;",
-            ordinal = 0
+            ordinal = 0,
+            remap = false
         )
     )
     private static FloatArgumentType source(float min, float max) {

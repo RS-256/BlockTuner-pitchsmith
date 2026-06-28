@@ -5,7 +5,7 @@ plugins {
     // id("me.modmuss50.mod-publish-plugin") version "1.1.0" apply false
 }
 
-stonecutter active "1.21.11"
+stonecutter active "26.1.2"
 
 stonecutter parameters {
     swaps["mod_version"] = "\"${property("mod.version")}\";"
@@ -27,7 +27,8 @@ tasks.register("runServerCurrentVersion") {
 }
 
 val releaseVersions = listOf(
-    "1.21.11"
+    "1.21.11",
+    "26.1.2"
 )
 
 tasks.register("buildReleaseRemapped") {
