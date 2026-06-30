@@ -177,7 +177,7 @@ publishMods {
     modLoaders.add("fabric")
 
     dryRun = providers.environmentVariable("MODRINTH_TOKEN").getOrNull() == null
-        || providers.environmentVariable("CURSEFORGE_TOKEN").getOrNull() == null
+        //|| providers.environmentVariable("CURSEFORGE_TOKEN").getOrNull() == null
 
 // Strongly recommend that you save the token in your PC’s environment variables.
 
@@ -189,7 +189,7 @@ publishMods {
             slug = "fabric-api"
         }
     }
-
+/*
     curseforge {
         projectId   = property("publish.curseforge") as String
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
@@ -198,12 +198,14 @@ publishMods {
             slug = "fabric-api"
         }
     }
+ */
 }
 
 tasks.named("publishModrinth") {
     dependsOn("remapJar")
 }
-
+/*
 tasks.named("publishCurseforge") {
     dependsOn("remapJar")
 }
+ */
