@@ -22,8 +22,8 @@ import java.util.List;
 public abstract class CommandSuggestionsMixin {
 
     @Final
-    @Shadow
-    CommandSuggestions field_21615;
+    @Shadow(aliases = {"this$0", "field_21615"})
+    CommandSuggestions commandSuggestions;
     @Shadow
     boolean tabCycles;
     @Shadow
@@ -51,7 +51,7 @@ public abstract class CommandSuggestionsMixin {
                 this.cycle(InputUtil.isShiftDown() ? 1 : -1);
                 suggestion.set(suggestionList.get(this.current));
             }
-            field_21615.keepSuggestions = false;
+            commandSuggestions.keepSuggestions = false;
         }
     }
 }
