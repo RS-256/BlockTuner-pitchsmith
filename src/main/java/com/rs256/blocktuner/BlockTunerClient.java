@@ -26,12 +26,14 @@ import com.rs256.blocktuner.util.MidiManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
@@ -50,6 +52,7 @@ public class BlockTunerClient implements ClientModInitializer {
                 && !player.isSpectator()
                 && !player.isShiftKeyDown()
                 && world.getBlockState(hitResult.getBlockPos()).getBlock() == Blocks.NOTE_BLOCK
+                && !shouldDeferToWorldEdit(player.getItemInHand(hand))
                 && player.getMainHandItem().getItem() != Items.BLAZE_ROD) {
                 Minecraft client = Minecraft.getInstance();
                 client.execute(() -> client.setScreen(new TuningScreen(Component.empty(), hitResult.getBlockPos())));
@@ -60,5 +63,9 @@ public class BlockTunerClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(ClientBoundHelloPacket.TYPE, ClientBoundHelloPacket::receive);
         ClientPlayConnectionEvents.JOIN.register((handler, sender, server) -> sender.sendPacket(new ServerBoundHelloPacket(TUNING_PROTOCOL)));
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> BlockTunerConfig.onBlockTunerServer = false);
+    }
+
+    private static boolean shouldDeferToWorldEdit(ItemStack stack) {
+        return FabricLoader.getInstance().isModLoaded("worldedit") && stack.getItem() == Items.WOODEN_AXE;
     }
 }
