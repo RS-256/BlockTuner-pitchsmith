@@ -30,6 +30,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class BlockTunerCommands {
 
@@ -44,7 +45,7 @@ public class BlockTunerCommands {
 
     private static int tune(CommandSourceStack source, BlockPos pos, int note) {
         ServerLevel world = source.getLevel();
-        if (world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK || !source.getPosition().closerThan(pos.getCenter(), 5.0d)) {
+        if (world.getBlockState(pos).getBlock() != Blocks.NOTE_BLOCK || !source.getPosition().closerThan(Vec3.atCenterOf(pos), 5.0d)) {
             return -1;
         }
         world.setBlock(pos, world.getBlockState(pos).setValue(NoteBlock.NOTE, note), 2 | 16);

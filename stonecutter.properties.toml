@@ -28,3 +28,12 @@ deps.modmenu = "18.0.0-beta.1"
 mod.mc_dep = ">=26.1 <=26.1.2"
 mod.mc_title = "26.1.2"
 mod.mc_targets = "26.1 26.1.1 26.1.2"
+
+["26.2"]
+deps.fabric_api = "0.154.2+26.2"
+deps.yacl = "3.9.5+26.2-fabric"
+build.yacl = ">=3.9.5"
+deps.modmenu = "20.0.1"
+mod.mc_dep = "26.2"
+mod.mc_title = "26.2"
+mod.mc_targets = "26.2"

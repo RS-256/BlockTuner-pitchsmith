@@ -44,11 +44,11 @@ public record ClientBoundHelloPacket(int protocolVersion) implements CustomPacke
     public static void receive(ClientBoundHelloPacket payload, ClientPlayNetworking.Context context) {
         if (BlockTuner.TUNING_PROTOCOL == payload.protocolVersion()) {
             Minecraft.getInstance().execute(() -> BlockTunerConfig.onBlockTunerServer = true);
-            //? if >=26.1 {
-            context.player().sendSystemMessage(Component.translatable("blocktuner.available"));
-            //?} else {
+            //? if <26.1 {
             /*context.player().displayClientMessage(Component.translatable("blocktuner.available"), false);
-            *///?}
+            *///?} else {
+            context.player().sendSystemMessage(Component.translatable("blocktuner.available"));
+            //?}
         }
     }
 

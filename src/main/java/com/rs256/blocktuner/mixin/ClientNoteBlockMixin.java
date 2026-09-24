@@ -66,7 +66,11 @@ public class ClientNoteBlockMixin extends Block {
         Minecraft client = Minecraft.getInstance();
         boolean openGuiModifierSatisfied = !BlockTunerConfig.isRequireCtrlToOpenGui() || InputUtil.isCtrlDown();
         if (livingEntity != null && livingEntity.equals(client.player) && openGuiModifierSatisfied && TuningScreen.shouldOpenGui(itemStack)) {
-            client.execute(() -> client.setScreen(new TuningScreen(Component.empty(), blockPos)));
+            //? if <26.2 {
+            /*client.execute(() -> client.setScreen(new TuningScreen(Component.empty(), blockPos)));
+            *///?} else {
+            client.execute(() -> client.gui.setScreen(new TuningScreen(Component.empty(), blockPos)));
+            //?}
         }
         super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
     }

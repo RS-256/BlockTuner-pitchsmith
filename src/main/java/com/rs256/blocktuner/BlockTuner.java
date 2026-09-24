@@ -44,15 +44,15 @@ public class BlockTuner implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("[BlockTuner] Now Loading BlockTuner!");
         CommandRegistrationCallback.EVENT.register(BlockTunerCommands::register);
-        //? if >=26.1 {
-        PayloadTypeRegistry.clientboundPlay().register(ClientBoundHelloPacket.TYPE, ClientBoundHelloPacket.CODEC);
-        PayloadTypeRegistry.serverboundPlay().register(ServerBoundHelloPacket.TYPE, ServerBoundHelloPacket.CODEC);
-        PayloadTypeRegistry.serverboundPlay().register(ServerBoundTuningPacket.TYPE, ServerBoundTuningPacket.CODEC);
-        //?} else {
+        //? if <26.1 {
         /*PayloadTypeRegistry.playS2C().register(ClientBoundHelloPacket.TYPE, ClientBoundHelloPacket.CODEC);
         PayloadTypeRegistry.playC2S().register(ServerBoundHelloPacket.TYPE, ServerBoundHelloPacket.CODEC);
         PayloadTypeRegistry.playC2S().register(ServerBoundTuningPacket.TYPE, ServerBoundTuningPacket.CODEC);
-        *///?}
+        *///?} else {
+        PayloadTypeRegistry.clientboundPlay().register(ClientBoundHelloPacket.TYPE, ClientBoundHelloPacket.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(ServerBoundHelloPacket.TYPE, ServerBoundHelloPacket.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(ServerBoundTuningPacket.TYPE, ServerBoundTuningPacket.CODEC);
+        //?}
         ServerPlayNetworking.registerGlobalReceiver(ServerBoundTuningPacket.TYPE, ServerBoundTuningPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(ServerBoundHelloPacket.TYPE, ServerBoundHelloPacket::receive);
     }
