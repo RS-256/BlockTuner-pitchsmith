@@ -1,4 +1,2 @@
 # v2.1.3-pitchsmith
-
-## Fixed
-- worldedit compatible click; if you load worldEdit, and hold wooden wand, then right click does not open the blocktuner GUI
+nothing changed, just update to mc26.2 and mc26.3
