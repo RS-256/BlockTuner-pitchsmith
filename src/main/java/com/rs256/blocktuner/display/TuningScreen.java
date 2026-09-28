@@ -46,6 +46,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+//? if <26.3 {
+//?} else {
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.world.item.component.SwingAnimation;
+//?}
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NoteBlock;
 import org.jetbrains.annotations.NotNullByDefault;
@@ -95,7 +100,8 @@ public class TuningScreen extends Screen {
         ClientPlayNetworking.send(new ServerBoundTuningPacket(pos, note));
     }
 
-    protected static int keyToNote(int scanCode) {
+    //? if <26.3 {
+    /*protected static int keyToNote(int scanCode) {
         return switch (scanCode) {
             case 3, 38 -> 7;
             case 4, 39 -> 9;
@@ -125,6 +131,40 @@ public class TuningScreen extends Screen {
             default -> -1;
         };
     }
+    *///?} else {
+    // SDL scancodes (USB HID usage), same physical keys as the pre-26.3 table above
+    // TODO: kill the shit remap
+    protected static int keyToNote(int scanCode) {
+        return switch (scanCode) {
+            case InputConstants.KEY_2, InputConstants.KEY_L -> 7;
+            case InputConstants.KEY_3, InputConstants.KEY_SEMICOLON -> 9;
+            case InputConstants.KEY_5 -> 12;
+            case InputConstants.KEY_6 -> 14;
+            case InputConstants.KEY_7 -> 16;
+            case InputConstants.KEY_9 -> 19;
+            case InputConstants.KEY_0 -> 21;
+            case InputConstants.KEY_EQUALS -> 24;
+            case InputConstants.KEY_Q, InputConstants.KEY_COMMA -> 6;
+            case InputConstants.KEY_W, InputConstants.KEY_PERIOD -> 8;
+            case InputConstants.KEY_E, InputConstants.KEY_SLASH -> 10;
+            case InputConstants.KEY_R -> 11;
+            case InputConstants.KEY_T -> 13;
+            case InputConstants.KEY_Y -> 15;
+            case InputConstants.KEY_U -> 17;
+            case InputConstants.KEY_I -> 18;
+            case InputConstants.KEY_O -> 20;
+            case InputConstants.KEY_P -> 22;
+            case InputConstants.KEY_LBRACKET -> 23;
+            case InputConstants.KEY_G -> 0;
+            case InputConstants.KEY_H -> 2;
+            case InputConstants.KEY_J -> 4;
+            case InputConstants.KEY_B -> 1;
+            case InputConstants.KEY_N -> 3;
+            case InputConstants.KEY_M -> 5;
+            default -> -1;
+        };
+    }
+    //?}
 
     @Override
     protected void init() {
@@ -229,8 +269,13 @@ public class TuningScreen extends Screen {
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (BlockTunerConfig.isKeyToPiano() && event.key() != 256) {
+        //? if <26.3 {
+        /*if (BlockTunerConfig.isKeyToPiano() && event.key() != 256) {
             int note = keyToNote(event.scancode());
+        *///?} else {
+        if (BlockTunerConfig.isKeyToPiano() && event.key() != InputConstants.KEY_ESCAPE) {
+            int note = keyToNote(event.key());
+        //?}
             if (note >= 0 && note <= 24 && !pianoKeys[note].played) {
                 pianoKeys[note].onClick(DUMMY_EVENT, false);
             }
@@ -246,7 +291,11 @@ public class TuningScreen extends Screen {
 
     @Override
     public boolean keyReleased(KeyEvent event) {
-        int note = keyToNote(event.scancode());
+        //? if <26.3 {
+        /*int note = keyToNote(event.scancode());
+        *///?} else {
+        int note = keyToNote(event.key());
+        //?}
         if (note >= 0 && note <= 24) {
             pianoKeys[note].onRelease(DUMMY_EVENT);
         }
@@ -353,7 +402,11 @@ public class TuningScreen extends Screen {
 
             if (minecraft.player != null && minecraft.getConnection() != null) {
                 sendTuningPacket(pos, note);
-                minecraft.player.swing(InteractionHand.MAIN_HAND);
+                //? if <26.3 {
+                /*minecraft.player.swing(InteractionHand.MAIN_HAND);
+                *///?} else {
+                minecraft.player.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
+                //?}
             }
 
             if (!BlockTunerConfig.isPlayMode()) {

@@ -27,6 +27,10 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
+//? if <26.3 {
+//?} else {
+import net.minecraft.world.item.component.SwingAnimation;
+//?}
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,7 +64,11 @@ public record ServerBoundTuningPacket(BlockPos blockPos, int note) implements Cu
         if (world.getBlockState(pos.above()).isAir()) {
             ((NoteBlockInvoker) state.getBlock()).blocktuner$playNote(context.player(), state, world, pos);
         }
-        context.player().swing(InteractionHand.MAIN_HAND);
+        //? if <26.3 {
+        /*context.player().swing(InteractionHand.MAIN_HAND);
+        *///?} else {
+        context.player().swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
+        //?}
     }
 
     @Override
